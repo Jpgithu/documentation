@@ -6,7 +6,10 @@
     {{ range where (where .Site.AllPages "Kind" "!=" "home") "Type" "!=" "api" }}
         {{ $page := . }}
         {{ if and ($page.IsDescendant $section) (ne $page.Params.private true) (ne $page.Params.kind "faq") (not $page.Draft) (not (isset .Params "external_redirect")) }}
-            {{ $rel_path := (print $page.File.Lang "/" $page.File.Path) }}
+            {{ $rel_path := "" }}
+            {{ with $page.File }}
+              {{ $rel_path = (print .Lang "/" .Path) }}
+            {{ end }}
             {{ $object_id := md5 $rel_path }}
             {{ $title := $page.Params.integration_title | default $page.Title }}
             {{ $content := $page.Plain | htmlUnescape | safeHTML | truncate 10000 }}
@@ -20,7 +23,7 @@
 
             {{- /* Full page record */ -}}
             {{ $record := (
-                dict "objectID" $object_id 
+                dict "objectID" $object_id
                 "title" $title
                 "content" $content
                 "type" $page.Type

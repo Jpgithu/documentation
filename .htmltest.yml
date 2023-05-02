@@ -26,6 +26,7 @@ IgnoreDirs:
   - api
   - fr
   - ja
+  - ko
 IgnoreURLs:
   - "/?api/(v1|v2)/*"
   - play.google.com
